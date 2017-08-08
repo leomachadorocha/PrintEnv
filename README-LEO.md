@@ -78,11 +78,15 @@ spec:
     - name: APP_VAR_3
       valueFrom:
         configMapKeyRef:
-          name: printenv-config
+          name: printenv-configmap
           key: APP_VAR_3
     - name: APP_VAR_4
       valueFrom:
         configMapKeyRef:
-          name: printenv-config
+          name: printenv-configmap
           key: APP_VAR_4
+```
+3. Update the ConfigMap with different values (VALUE3, VALUE4).
+```
+oc edit cm printenv-configmap
 ```
