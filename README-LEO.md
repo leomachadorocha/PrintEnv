@@ -98,6 +98,6 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 oc edit cm printenv-configmap
 ```
 
-5. View the environment variables(step 3). 
+5. View the environment variables values (step 3). 
     
     
