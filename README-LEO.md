@@ -120,13 +120,13 @@ echo "This is the Config File" > temp/configfile.txt
 
 3. Create a ConfigMap using this file (using Specific File).
 ```
-oc create configmap meu-configmap-file \
+oc create configmap printenv-configmap-file \
     --from-file=temp/configfile.txt
 ```
 
 4. Mount the ConfigMap to the container at the /temp location.
 ```
-oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=meu-configmap-file
+oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=printenv-configmap-file
 ```
 
 5. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON)
