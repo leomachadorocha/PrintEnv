@@ -30,10 +30,35 @@ OBS: "jq -S" sorts the output by key, making it easier to find a particular vari
 
 # Demonstrate Environment Variables #
 
-6. Increase the weights for one service by 20% and verify that you retrieve seven images of one type and three of the other for every ten calls to the route. 
+6. Set up two environment variables. 
 ```
-oc edit route ab-cotd-route
+oc set env dc/printenv APP_VAR_1=Value1 APP_VAR_2=Value2
+```
+
+7. View the environment variables created. 
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
+```
+
+8. Delete the second environment variable.
+```
+oc set env dc/printenv APP_VAR_2-
+```
+
+9. View the environment variables created. 
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
+```
+
+10. Change the value of APP_VAR_1 to VALUE1
+```
+oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
+```
+
+11. View the environment variables created. 
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 
 
-# Demonstrate EConfigMap #
+# Demonstrate ConfigMap #
