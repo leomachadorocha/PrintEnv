@@ -46,9 +46,8 @@ oc set env dc/printenv APP_VAR_2-
 ```
 
 9. View the environment variables values (step 7).
-```
-```
-
+   
+   
 10. Change the value of APP_VAR_1 to VALUE1
 ```
 oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
