@@ -57,3 +57,32 @@ oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 
 
 # Demonstrate ConfigMap #
+
+1. Create a ConfigMap with two environment variables (using Literal values).
+```
+oc create configmap printenv-configmap \
+    --from-literal=APP_VAR_3=Value3 \
+    --from-literal=APP_VAR_4=Value4
+```
+
+2. Update the deployment configuration to retrieve these two variables from the ConfigMap.
+```
+oc edit dc printenv
+```
+```
+spec:
+  containers:
+  - env:
+    - name: APP_VAR_1
+      value: Value1
+    - name: APP_VAR_3
+      valueFrom:
+        configMapKeyRef:
+          name: printenv-config
+          key: APP_VAR_3
+    - name: APP_VAR_4
+      valueFrom:
+        configMapKeyRef:
+          name: printenv-config
+          key: APP_VAR_4
+```
