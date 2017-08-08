@@ -1,3 +1,7 @@
+This application returns the current environment as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a text file.
+
+Set the READ_FROM_FILE
+
 # Create the Project # 
 
 1. Create an empty project.
