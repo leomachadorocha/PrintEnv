@@ -24,13 +24,16 @@ oc get route printenv | awk '{print $2}' | grep printenv
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
-   OBS: "jq -S" sorts the output by key, making it easier to find a particular variable. 
+OBS: "jq -S" sorts the output by key, making it easier to find a particular variable. 
 
 
 
-# Environment Variables #
+# Demonstrate Environment Variables #
 
 6. Increase the weights for one service by 20% and verify that you retrieve seven images of one type and three of the other for every ten calls to the route. 
 ```
 oc edit route ab-cotd-route
 ```
+
+
+# Demonstrate EConfigMap #
