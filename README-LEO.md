@@ -1,6 +1,6 @@
-This application returns the current environment variables as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a text file.
+This simple Node.js application returns all of the available environment variables as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a local text file.
 
-
+ 
 # Create the Project # 
 
 1. Create an empty project.
@@ -62,7 +62,7 @@ oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 
 # Demonstrate ConfigMap #
 
-1. Create a ConfigMap with two environment variables (using Literal values).
+1. Create a ConfigMap with two environment variables (using Literal Values).
 ```
 oc create configmap printenv-configmap \
     --from-literal=APP_VAR_3=Value3 \
@@ -103,5 +103,33 @@ oc edit cm printenv-configmap
 ```
 
 5. View the environment variables values (step 3). 
-    
-    
+
+
+
+# Demonstrate Environment Variables from a text file #
+
+1. Set an specific environment variable to read from the file.
+```
+oc set env dc/printenv READ_FROM_FILE=/temp/configfile.txt
+```
+
+2. Create a configuration file.
+```
+echo "This is the Config File" > configfile.txt
+```
+
+3. Create a ConfigMap using this file (using Specific File).
+```
+oc create configmap meu-configmap-file \
+    --from-file=configfile.txt```
+
+
+4. Mount the ConfigMap to the container at the /temp location.
+```
+oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=meu-configmap-file
+```
+
+5. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON)
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv)
+```
