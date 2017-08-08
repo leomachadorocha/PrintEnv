@@ -86,7 +86,18 @@ spec:
           name: printenv-configmap
           key: APP_VAR_4
 ```
-3. Update the ConfigMap with different values (VALUE3, VALUE4).
+
+3. View the environment variables created. 
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
+```
+
+
+4. Update the ConfigMap with different values (VALUE3, VALUE4).
 ```
 oc edit cm printenv-configmap
 ```
+
+5. View the environment variables(step 3). 
+    
+    
