@@ -45,7 +45,7 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 oc set env dc/printenv APP_VAR_2-
 ```
 
-9. View the environment variables created. 
+9. View the environment variables values. 
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
@@ -55,7 +55,7 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 ```
 
-11. View the environment variables created. 
+11. View the environment variables values. 
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
