@@ -1,6 +1,5 @@
 This application returns the current environment as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a text file.
 
-Set the READ_FROM_FILE
 
 # Create the Project # 
 
@@ -58,6 +57,7 @@ oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 ```
 
 11. View the environment variables values (step 7). 
+
 
 
 # Demonstrate ConfigMap #
