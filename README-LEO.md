@@ -13,7 +13,6 @@ oc new-app https://github.com/leomachadorocha/PrintEnv
 3. Create a route.
 ```
 oc expose svc printenv
-oc get route printenv | awk '{print $2}' | grep printenv
 ```
 
 4. View the route.
