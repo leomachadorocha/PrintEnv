@@ -1,4 +1,4 @@
-This application returns the current environment as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a text file.
+This application returns the current environment variables as JSON data, but if a specific environment variable READ_FROM_FILE is setted, it returns the contents of a text file.
 
 
 # Create the Project # 
