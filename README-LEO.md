@@ -45,7 +45,9 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 oc set env dc/printenv APP_VAR_2-
 ```
 
-9. View the environment variables values (step 7). 
+9. View the environment variables values (step 7).
+```
+```
 
 10. Change the value of APP_VAR_1 to VALUE1
 ```
