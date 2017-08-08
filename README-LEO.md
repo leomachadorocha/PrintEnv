@@ -115,13 +115,13 @@ oc set env dc/printenv READ_FROM_FILE=/temp/configfile.txt
 
 2. Create a configuration file.
 ```
-echo "This is the Config File" > configfile.txt
+echo "This is the Config File" > temp/configfile.txt
 ```
 
 3. Create a ConfigMap using this file (using Specific File).
 ```
 oc create configmap meu-configmap-file \
-    --from-file=configfile.txt
+    --from-file=temp/configfile.txt
 ```
 
 4. Mount the ConfigMap to the container at the /temp location.
