@@ -142,7 +142,7 @@ Secrets can be added to a pod through environment variables or volumes.
 
 1. Create a printenv-secret secret that contains a user ID field named app_user and a password field named app_password.
 ```
-echo 'r3dh4t1!' > ./password.txt
+echo 'p4ssw0rd' > ./password.txt
 echo 'admin' > ./user.txt
 oc secret new printenv-secret app_user=user.txt app_password=password.txt
 oc describe secrets printenv-secret
@@ -188,4 +188,25 @@ oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
 
 ## Secret Added Through Volume Mount ##
 
-1. 
+1. Create a printenv-db-secret secret that contains a user ID, password, and database URL, naming these app_db_user, app_db_password, and app_db_url, respectively.
+```
+echo 'p4ssw0rd' > ./dbpassword.txt
+echo 'admin' > ./dbuser.txt
+echo 'http://postgresql:5432' > ./dburl.txt
+oc secret new printenv-db-secret app_db_user=user.txt app_db_password=password.txt app_db_url=dburl.txt
+```
+
+2. Mount the new database secret as a volume into the PrintEnv deployment configuration.
+```
+oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /dbconfig/ --secret-name=printenv-db-secret
+```
+
+3. Update the READ_FROM_FILE environment variable to point to one of the files in the volume created (/dbconfig directory).
+```
+oc set env dc/printenv READ_FROM_FILE=/dbconfig/app_db_url
+```
+
+4. Verify that the data is being returned as expected.
+```
+curl $(oc get route printenv | awk '{print $2}' | grep printenv)
+```
