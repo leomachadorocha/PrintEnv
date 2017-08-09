@@ -201,6 +201,7 @@ oc secret new printenv-db-secret app_db_user=user.txt app_db_password=password.t
 ```
 oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /temp/ --secret-name=printenv-db-secret
 ```
+> OBS: `oc set volume dc/printenv --remove --name=db-config-volume`
 
 3. Update the READ_FROM_FILE environment variable to point to one of the files in the volume created (/dbconfig directory).
 ```
