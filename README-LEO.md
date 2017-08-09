@@ -133,3 +133,9 @@ oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 ```
+
+
+# Secrets #
+Secrets can be added to a pod through environment variables or volumes.
+
+## Secret Added Through Environment Variables ##
