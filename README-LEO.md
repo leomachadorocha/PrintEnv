@@ -128,6 +128,7 @@ oc create configmap printenv-configmap-file \
 ```
 oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=printenv-configmap-file
 ```
+> OBS: `oc set volume dc/printenv --remove --name=configmap-volume
 
 5. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON).
 ```
