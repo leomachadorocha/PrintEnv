@@ -33,30 +33,30 @@ OBS: "jq -S" sorts the output by key, making it easier to find a particular vari
 
 # Demonstrate Environment Variables #
 
-6. Set up two environment variables. 
+1. Set up two environment variables. 
 ```
 oc set env dc/printenv APP_VAR_1=Value1 APP_VAR_2=Value2
 ```
 
-7. View the environment variables created. 
+2. View the environment variables created. 
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 
-8. Delete the second environment variable.
+3. Delete the second environment variable.
 ```
 oc set env dc/printenv APP_VAR_2-
 ```
 
-9. View the environment variables values (step 7).
+4. View the environment variables values (step 7).
    
    
-10. Change the value of APP_VAR_1 to VALUE1
+5. Change the value of APP_VAR_1 to VALUE1
 ```
 oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 ```
 
-11. View the environment variables values (step 7). 
+6. View the environment variables values (step 7). 
 
 
 
@@ -139,3 +139,53 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 Secrets can be added to a pod through environment variables or volumes.
 
 ## Secret Added Through Environment Variables ##
+
+1. Create a printenv-secret secret that contains a user ID field named app_user and a password field named app_password.
+```
+echo 'r3dh4t1!' > ./password.txt
+echo 'admin' > ./user.txt
+oc secret new printenv-secret app_user=user.txt app_password=password.txt
+oc describe secrets printenv-secret
+```
+
+2. Validate the secret.
+```
+oc get secret printenv-secret -o yaml
+```
+```
+apiVersion: v1
+data:
+  app_password: cjNkaDR0MSEK
+  app_user: YWRtaW4K
+kind: Secret
+...
+```
+
+3. Verify that the secret is created by decoding the values in the secret.
+```
+echo "cjNkaDR0MSEK" | base64 --decode
+echo "YWRtaW4K" | base64 --decode
+```
+
+4. Add the secret to the PrintEnv application.
+```
+oc env dc/printenv --from=secret/printenv-secret
+```
+
+5. Verify that it is added.
+```
+oc env dc/printenv --list
+```
+
+6. Add the secret again to the PrintEnv application prefixing both variables with MYSQL_.
+```
+oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
+```
+
+7. Verify that it is added (step 5).
+
+
+
+## Secret Added Through Volume Mount ##
+
+1. 
