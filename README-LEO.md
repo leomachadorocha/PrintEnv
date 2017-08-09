@@ -108,14 +108,14 @@ oc edit cm printenv-configmap
 
 # Demonstrate Environment Variables from a text file #
 
-1. Set an specific environment variable to read from the file.
-```
-oc set env dc/printenv READ_FROM_FILE=/temp/configfile.txt
-```
-
-2. Create a configuration file.
+1. Create a configuration file.
 ```
 echo "This is the Config File" > temp/configfile.txt
+```
+
+2. Set an specific environment variable to read from the file.
+```
+oc set env dc/printenv READ_FROM_FILE=/temp/configfile.txt
 ```
 
 3. Create a ConfigMap using this file (using Specific File).
