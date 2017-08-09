@@ -194,7 +194,7 @@ oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
 echo 'p4ssw0rd' > ./dbpassword.txt
 echo 'admin' > ./dbuser.txt
 echo 'http://postgresql:5432' > ./dburl.txt
-oc secret new printenv-db-secret app_db_user=user.txt app_db_password=password.txt app_db_url=dburl.txt
+oc secret new printenv-db-secret app_db_user=dbuser.txt app_db_password=dbpassword.txt app_db_url=dburl.txt
 ```
 
 2. Mount the new database secret as a volume into the PrintEnv deployment configuration.
