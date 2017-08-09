@@ -198,12 +198,12 @@ oc secret new printenv-db-secret app_db_user=user.txt app_db_password=password.t
 
 2. Mount the new database secret as a volume into the PrintEnv deployment configuration.
 ```
-oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /dbconfig/ --secret-name=printenv-db-secret
+oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /temp/ --secret-name=printenv-db-secret
 ```
 
 3. Update the READ_FROM_FILE environment variable to point to one of the files in the volume created (/dbconfig directory).
 ```
-oc set env dc/printenv READ_FROM_FILE=/dbconfig/app_db_url
+oc set env dc/printenv READ_FROM_FILE=/temp/app_db_url
 ```
 
 4. Verify that the data is being returned as expected.
