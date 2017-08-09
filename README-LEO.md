@@ -130,15 +130,17 @@ oc create configmap printenv-configmap-file \
 ```
 oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=printenv-configmap-file
 ```
-> OBS: `oc set volume dc/printenv --remove --name=configmap-volume`
+> OBS:   
+remove = `oc set volume dc/printenv --remove --name=configmap-volume`    
+list   = `oc set volume dc/printenv`   
 
 5. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON).
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv)
-```
-
-
-
+```   
+   
+   
+   
 # Secrets #
 Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-volume-mount).
 
