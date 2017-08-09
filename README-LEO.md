@@ -136,7 +136,7 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 
 
 # Secrets #
-Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-environment-variables).
+Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-volume-mount).
 
 ## Secret Added Through Environment Variables ##
 
