@@ -213,8 +213,9 @@ oc secret new printenv-db-secret \
 ```
 oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /folder-in-container/ --secret-name=printenv-db-secret
 ```
-> OBS: `oc set volume dc/printenv --remove --name=db-config-volume`
-
+> OBS: 
+remove = `oc set volume dc/printenv --remove --name=db-config-volume`
+list   = `oc set volume dc/printenv`
 
 9e. Set an specific environment variable to read from the file (inside the container).
 ```
