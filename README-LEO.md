@@ -29,50 +29,46 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 > OBS: "jq -S" sorts the output by key, making it easier to find a particular variable.    
    
-   
-   
-   
-   
+ 
+ 
 # A - Demonstrate Environment Variables #
 
-1. Set up two environment variables. 
+6a. Set up two environment variables. 
 ```
 oc set env dc/printenv APP_VAR_1=Value1 APP_VAR_2=Value2
 ```
 
-2. View the environment variables created. 
+7a. View the environment variables created. 
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 
-3. Delete the second environment variable.
+8a. Delete the second environment variable.
 ```
 oc set env dc/printenv APP_VAR_2-
 ```
 
-4. View the environment variables values (step 7).
+9a. View the environment variables values (step 7).
    
    
-5. Change the value of APP_VAR_1 to VALUE1
+10a. Change the value of APP_VAR_1 to VALUE1
 ```
 oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 ```
-
-6. View the environment variables values (step 7). 
-
+11a. View the environment variables values (step 7). 
 
 
 
 # B - Demonstrate ConfigMap #
 
-1. Create a ConfigMap with two environment variables (using Literal Values).
+6b. Create a ConfigMap with two environment variables (using Literal Values).
 ```
 oc create configmap printenv-configmap \
     --from-literal=APP_VAR_3=Value3 \
     --from-literal=APP_VAR_4=Value4
 ```
 
-2. Update the deployment configuration to retrieve these two variables from the ConfigMap.
+7b. Update the deployment configuration to retrieve these two variables from the ConfigMap.
 ```
 oc edit dc printenv
 ```
@@ -94,48 +90,50 @@ spec:
           key: APP_VAR_4
 ```
 
-3. View the environment variables created. 
+8b. View the environment variables created. 
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 
-4. Update the ConfigMap with different values (VALUE3, VALUE4).
+9b. Update the ConfigMap with different values (VALUE3, VALUE4).
 ```
 oc edit cm printenv-configmap
 ```
 
-5. View the environment variables values (step 3). 
-
+10b. View the environment variables values (step 3). 
 
 
 
 # C - Demonstrate Environment Variables from a text file #
 
-1. Create a configuration file.
+6c. Create a configuration file.
 ```
-echo "This is the Config File" > temp/configfile.txt
-```
-
-2. Set an specific environment variable to read from the file.
-```
-oc set env dc/printenv READ_FROM_FILE=/temp/configfile.txt
+cd && \
+mkdir labs && \
+echo "This is the Config File" > labs/configfile.txt
 ```
 
-3. Create a ConfigMap using this file (using Specific File).
+7c. Create a ConfigMap using this file (using Specific File).
 ```
 oc create configmap printenv-configmap-file \
-    --from-file=temp/configfile.txt
+    --from-file=labs/configfile.txt
 ```
 
-4. Mount the ConfigMap to the container at the /temp location.
+8c. Mount the ConfigMap to the container at the /temp location.
 ```
-oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /temp/ -t configmap --configmap-name=printenv-configmap-file
+oc set volume dc/printenv --add --overwrite --name=configmap-volume -m /folder-in-container/ -t configmap --configmap-name=printenv-configmap-file
 ```
 > OBS:   
 remove = `oc set volume dc/printenv --remove --name=configmap-volume`    
 list   = `oc set volume dc/printenv`   
 
-5. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON).
+
+9c. Set an specific environment variable to read from the file.
+```
+oc set env dc/printenv READ_FROM_FILE=/folder-in-container/configfile.txt
+```
+
+10c. Verify that now the application is returning the contents of the text file (do not use jq since the output is no longer JSON).
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 ```   
@@ -147,15 +145,20 @@ Secrets can be added to a pod through [environment variables](https://github.com
 
 ## D - Secret Added Through Environment Variables ##
 
-1. Create a printenv-secret secret that contains a user ID field named app_user and a password field named app_password.
+6d. Create the files.
 ```
-echo 'p4ssw0rd' > ./password.txt
-echo 'admin' > ./user.txt
-oc secret new printenv-secret app_user=user.txt app_password=password.txt
-oc describe secrets printenv-secret
+cd && \
+mkdir labs && \
+echo 'p4ssw0rd' > labs/password.txt && \
+echo 'admin' > labs/user.txt
 ```
 
-2. Validate the secret.
+7d. Create a printenv-secret secret that contains a user ID field named app_user and a password field named app_password.
+```
+oc secret new printenv-secret app_user=labs/user.txt app_password=labs/password.txt
+```
+
+8d. Validate the secret.
 ```
 oc get secret printenv-secret -o yaml
 ```
@@ -168,28 +171,28 @@ kind: Secret
 ...
 ```
 
-3. Verify that the secret is created by decoding the values in the secret.
+9d. Verify that the secret is created by decoding the values in the secret.
 ```
 echo "cjNkaDR0MSEK" | base64 --decode
 echo "YWRtaW4K" | base64 --decode
 ```
 
-4. Add the secret to the PrintEnv application.
+10d. Add the secret to the PrintEnv application.
 ```
 oc env dc/printenv --from=secret/printenv-secret
 ```
 
-5. Verify that it is added, listing all the environment variables in a deployment configuration.
+11d. Verify that it is added, listing all the environment variables in a deployment configuration.
 ```
 oc env dc/printenv --list
 ```
 
-6. Add the secret again to the PrintEnv application prefixing both variables with MYSQL_.
+12d. Add the secret again to the PrintEnv application prefixing both variables with MYSQL_.
 ```
 oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
 ```
 
-7. Verify that it is added (step 5).
+13d. Verify that it is added (step 5).
 
 
 
