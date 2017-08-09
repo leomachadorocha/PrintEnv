@@ -27,7 +27,7 @@ oc get route printenv | awk '{print $2}' | grep printenv
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
-OBS: "jq -S" sorts the output by key, making it easier to find a particular variable. 
+> OBS: "jq -S" sorts the output by key, making it easier to find a particular variable. 
 
 
 
