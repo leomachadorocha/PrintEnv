@@ -27,11 +27,12 @@ oc get route printenv | awk '{print $2}' | grep printenv
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
-> OBS: "jq -S" sorts the output by key, making it easier to find a particular variable. 
-
-
-
-
+> OBS: "jq -S" sorts the output by key, making it easier to find a particular variable.    
+   
+   
+   
+   
+   
 # A - Demonstrate Environment Variables #
 
 1. Set up two environment variables. 
@@ -216,9 +217,9 @@ oc secret new printenv-db-secret \
 oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /folder-in-container/ --secret-name=printenv-db-secret
 ```
 > OBS:   
-> remove = `oc set volume dc/printenv --remove --name=db-config-volume`   
-> list   = `oc set volume dc/printenv`   
-
+remove = `oc set volume dc/printenv --remove --name=db-config-volume`   
+list   = `oc set volume dc/printenv`   
+   
 9e. Set an specific environment variable to read from the file (inside the container).
 ```
 oc set env dc/printenv READ_FROM_FILE=/folder-in-container/app_db_url
