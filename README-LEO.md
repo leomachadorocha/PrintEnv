@@ -189,26 +189,36 @@ oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
 
 ## Secret Added Through Volume Mount ##
 
-1. Create a printenv-db-secret secret that contains a user ID, password, and database URL, naming these app_db_user, app_db_password, and app_db_url, respectively.
+6. Create the files.
 ```
-echo 'p4ssw0rd' > ./dbpassword.txt
-echo 'admin' > ./dbuser.txt
-echo 'http://postgresql:5432' > ./dburl.txt
-oc secret new printenv-db-secret app_db_user=dbuser.txt app_db_password=dbpassword.txt app_db_url=dburl.txt
+cd && \
+mkdir labs && \
+echo 'p4ssw0rd' > labs/dbpassword.txt && \
+echo 'admin' > labs/dbuser.txt && \
+echo 'http://postgresql:5432' > labs/dburl.txt
 ```
 
-2. Mount the new database secret as a volume into the PrintEnv deployment configuration.
+7. Set an specific environment variable to read from the file.
 ```
-oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /temp/ --secret-name=printenv-db-secret
+oc set env dc/printenv READ_FROM_FILE=/folder-in-container/app_db_url
+```
+
+8. Create a printenv-db-secret secret that contains a user ID, password, and database URL, naming these app_db_user, app_db_password, and app_db_url, respectively.
+```
+oc secret new printenv-db-secret \
+  app_db_user=labs/dbuser.txt \
+  app_db_password=labs/dbpassword.txt \
+  app_db_url=labs/dburl.txt
+```
+
+9. Mount the new database secret as a volume into the PrintEnv deployment configuration.
+```
+oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /folder-in-container/ --secret-name=printenv-db-secret
 ```
 > OBS: `oc set volume dc/printenv --remove --name=db-config-volume`
 
-3. Update the READ_FROM_FILE environment variable to point to one of the files in the volume created (/dbconfig directory).
-```
-oc set env dc/printenv READ_FROM_FILE=/temp/app_db_url
-```
 
-4. Verify that the data is being returned as expected.
+10. Verify that the data is being returned as expected.
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 ```
