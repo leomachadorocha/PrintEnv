@@ -172,7 +172,7 @@ echo "YWRtaW4K" | base64 --decode
 oc env dc/printenv --from=secret/printenv-secret
 ```
 
-5. Verify that it is added.
+5. Verify that it is added, listing all the environment variables in a deployment configuration.
 ```
 oc env dc/printenv --list
 ```
