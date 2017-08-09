@@ -31,7 +31,8 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 
 
 
-# Demonstrate Environment Variables #
+
+# A - Demonstrate Environment Variables #
 
 1. Set up two environment variables. 
 ```
@@ -60,7 +61,8 @@ oc set env dc/printenv --overwrite APP_VAR_1=VALUE1
 
 
 
-# Demonstrate ConfigMap #
+
+# B - Demonstrate ConfigMap #
 
 1. Create a ConfigMap with two environment variables (using Literal Values).
 ```
@@ -96,7 +98,6 @@ spec:
 curl $(oc get route printenv | awk '{print $2}' | grep printenv) | jq -S
 ```
 
-
 4. Update the ConfigMap with different values (VALUE3, VALUE4).
 ```
 oc edit cm printenv-configmap
@@ -106,7 +107,8 @@ oc edit cm printenv-configmap
 
 
 
-# Demonstrate Environment Variables from a text file #
+
+# C - Demonstrate Environment Variables from a text file #
 
 1. Create a configuration file.
 ```
@@ -136,10 +138,11 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 ```
 
 
+
 # Secrets #
 Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#secret-added-through-volume-mount).
 
-## Secret Added Through Environment Variables ##
+## D - Secret Added Through Environment Variables ##
 
 1. Create a printenv-secret secret that contains a user ID field named app_user and a password field named app_password.
 ```
@@ -187,9 +190,9 @@ oc env dc/printenv --from=secret/printenv-secret --prefix=MYSQL_
 
 
 
-## Secret Added Through Volume Mount ##
+## E - Secret Added Through Volume Mount ##
 
-6. Create the files.
+6e. Create the files.
 ```
 cd && \
 mkdir labs && \
@@ -198,12 +201,7 @@ echo 'admin' > labs/dbuser.txt && \
 echo 'http://postgresql:5432' > labs/dburl.txt
 ```
 
-7. Set an specific environment variable to read from the file.
-```
-oc set env dc/printenv READ_FROM_FILE=/folder-in-container/app_db_url
-```
-
-8. Create a printenv-db-secret secret that contains a user ID, password, and database URL, naming these app_db_user, app_db_password, and app_db_url, respectively.
+7e. Create a printenv-db-secret secret that contains a user ID, password, and database URL, naming these app_db_user, app_db_password, and app_db_url, respectively.
 ```
 oc secret new printenv-db-secret \
   app_db_user=labs/dbuser.txt \
@@ -211,14 +209,24 @@ oc secret new printenv-db-secret \
   app_db_url=labs/dburl.txt
 ```
 
-9. Mount the new database secret as a volume into the PrintEnv deployment configuration.
+8e. Mount the new database secret as a volume into the PrintEnv deployment configuration.
 ```
 oc set volume dc/printenv --add --overwrite --name=db-config-volume -m /folder-in-container/ --secret-name=printenv-db-secret
 ```
 > OBS: `oc set volume dc/printenv --remove --name=db-config-volume`
 
 
-10. Verify that the data is being returned as expected.
+9e. Set an specific environment variable to read from the file (inside the container).
+```
+oc set env dc/printenv READ_FROM_FILE=/folder-in-container/app_db_url
+```
+
+10e. Verify that the environment variable was added.
+```
+oc env dc/printenv --list
+```
+
+11e. Verify that the data is being returned as expected.
 ```
 curl $(oc get route printenv | awk '{print $2}' | grep printenv)
 ```
