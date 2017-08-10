@@ -78,16 +78,16 @@ spec:
   - env:
     - name: APP_VAR_1
       value: Value1
-  **- name: APP_VAR_3
+  **- name: APP_VAR_3**
       valueFrom:
         configMapKeyRef:
           name: printenv-configmap
           key: APP_VAR_3
-    - name: APP_VAR_4
-      valueFrom:
+    - name: APP_VAR_4
+      valueFrom:
         configMapKeyRef:
           name: printenv-configmap
-          key: APP_VAR_4**
+          __key: APP_VAR_4__
 ```
 
 8b. View the environment variables created. 
