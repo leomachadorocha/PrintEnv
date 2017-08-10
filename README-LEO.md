@@ -10,7 +10,7 @@ oc new-project printenv --display-name="Print all environment variables" --descr
 
 2. Create an application instance.
 ```
-oc new-app https://github.com/leomachadorocha/PrintEnv
+oc new-app https://github.com/leomachadorocha/ocp-app-configuration
 ```
 
 3. Create a route.
@@ -141,7 +141,7 @@ curl $(oc get route printenv | awk '{print $2}' | grep printenv)
    
    
 # Secrets #
-Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#d---secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/PrintEnv/blob/master/README-LEO.md#e---secret-added-through-volume-mount).
+Secrets can be added to a pod through [environment variables](https://github.com/leomachadorocha/ocp-app-configuration/blob/master/README-LEO.md#d---secret-added-through-environment-variables) or [volumes](https://github.com/leomachadorocha/ocp-app-configuration/blob/master/README-LEO.md#e---secret-added-through-volume-mount).
 
 ## D - Secret Added Through Environment Variables ##
 
